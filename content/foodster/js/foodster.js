@@ -2,30 +2,30 @@
 Booking Form
 ==============================================*/
 
-$(function() {
+$(function () {
     "use strict";
     loadGoogleMap();
-    if ( $('#video').length != 0 ) {
+    if ($('#video').length != 0) {
         // Pause video before the page is ready
         $('#video').get(0).pause();
     }
     // use jQuery Bootstrap Validation to validate the booking form input
     $("input,textarea").jqBootstrapValidation({
         preventSubmit: true,
-        submitError: function($form, event, errors) {
+        submitError: function ($form, event, errors) {
             // additional error messages or events
         },
-        submitSuccess: function($form, event) {
+        submitSuccess: function ($form, event) {
             event.preventDefault(); // prevent default submit behaviour
             // get values from FORM
-            var name            = $("input#first_name1").val() + ' ' + $("input#last_name1").val();
-            var email           = $("input#email1").val();
-            var phone           = $("input#phone1").val();
-            var reservDate      = $('input#reserv_date1').val();
-            var numGuests       = $('input#numb_guests1').val();
-            var altDate         = $('input#alt_reserv_date1').val();
-            var bookingTime     = $('input#time1').val();
-            var message         = $("textarea#message").val();
+            var name = $("input#first_name1").val() + ' ' + $("input#last_name1").val();
+            var email = $("input#email1").val();
+            var phone = $("input#phone1").val();
+            var reservDate = $('input#reserv_date1').val();
+            var numGuests = $('input#numb_guests1').val();
+            var altDate = $('input#alt_reserv_date1').val();
+            var bookingTime = $('input#time1').val();
+            var message = $("textarea#message").val();
             $.ajax({
                 url: "././assets/php/mail/booking.php",
                 type: "POST",
@@ -40,7 +40,7 @@ $(function() {
                     message: message
                 },
                 cache: false,
-                success: function() {
+                success: function () {
                     // Success message
                     $('#success').html("<div class='alert alert-success'>");
                     $('#success > .alert-success').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -53,7 +53,7 @@ $(function() {
                     //clear all fields
                     $('#contactForm').trigger("reset");
                 },
-                error: function() {
+                error: function () {
                     // Fail message
                     $('#success').html("<div class='alert alert-danger'>");
                     $('#success > .alert-danger').html("<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;")
@@ -65,81 +65,11 @@ $(function() {
                 },
             });
         },
-        filter: function() {
+        filter: function () {
             return $(this).is(":visible");
         },
     });
 });
-
-/*============================================
-Contact Map
-==============================================*/
-    function loadGoogleMap() {
-        "use strict";
-    
-        // Set mapPoint, latitude and longitude, zoom, and other info needed for Google Map
-        var mapPoint = {
-            'lat': 39.1054515,
-            'lng': -94.5813767,
-            'zoom' : 16,
-            'infoText': '<p>The Homesteader Cafe\
-                         <br/>100 E 7th St\
-                         <br/>Kansas City, MO\
-                         <br/>64106</p>',
-            'linkText':'View on Google Maps',
-            'mapAddress':'100 E 7th St, Kansas City, MO 64106',
-            'icon': '/content/foodster/images/map_pin.png'
-        };
-
-        if($('#homepage_map').length){
-        
-            var map;
-            var mapstyles = [ { "stylers": [ { "saturation": -100 } ] } ];
-            
-            var infoWindow = new google.maps.InfoWindow();
-            var pointLatLng = new google.maps.LatLng(mapPoint.lat, mapPoint.lng);
-
-            // Define options for the Google Map
-            var mapOptions = {
-                zoom: mapPoint.zoom,
-                center: pointLatLng,
-                zoomControl : true,
-                panControl : false,
-                streetViewControl : false,
-                mapTypeControl: false,
-                overviewMapControl: false,
-                scrollwheel: false,
-                styles: mapstyles
-            };
-            
-            // Create new Google Map object for full width map section on homepage
-            map = new google.maps.Map(document.getElementById("homepage_map"), mapOptions);
-
-            var marker = new google.maps.Marker({
-                position: pointLatLng, 
-                map: map, 
-                title:mapPoint.linkText,
-                icon: mapPoint.icon
-            });
-            
-            var mapLink = 'https://www.google.com/maps/preview?ll='+mapPoint.lat+','+mapPoint.lng+'&z=14&q='+mapPoint.mapAddress;
-            
-            // Set the info window content
-            var html = '<div class="infowin">' + mapPoint.infoText + '<a href="'+mapLink+'" target="_blank">'+mapPoint.linkText+'</a>' + '</div>';
-
-            // Add map marker
-            google.maps.event.addListener(marker, 'mouseover', function() {
-                infoWindow.setContent(html);
-                infoWindow.open(map, marker);
-            });
-
-            // Function for when the map marker is clicked 
-            google.maps.event.addListener(marker, 'click', function() {
-                window.open(mapLink,'_blank');
-            });
-            
-        }
-    }
 
 /*============================================
 Match height of header carousel to window height
@@ -154,25 +84,25 @@ function matchCarouselHeight() {
 /*====================================================================================================
 Any JS inside $(window).load function is called when the window is ready and all assets are downloaded
 ======================================================================================================*/
-$(window).load(function() {
+$(window).load(function () {
     "use strict";
 
     // Remove loading screen when window is loaded after 1.5 seconds
-    setTimeout(function() {
+    setTimeout(function () {
         $(window).trigger('resize');
         $('.loading-screen').fadeOut(); // fade out the loading-screen div
-        if ( $('#video').length != 0 ) {
+        if ($('#video').length != 0) {
             // Play video once the page is fully loaded and loading screen is hidden
             $('#video').get(0).play();
         }
-    },1500); // 1.5 second delay so that we avoid the 'flicker' of the loading screen showing for a split second and then hiding immediately when its not needed
+    }, 1500); // 1.5 second delay so that we avoid the 'flicker' of the loading screen showing for a split second and then hiding immediately when its not needed
 
     // Call function for Google Maps
     $('.restaurantPopUp').on('show.bs.modal', function (e) {
         // Call function for Google Maps when a modal is opened
-        setTimeout(function() {
+        setTimeout(function () {
             loadGoogleMap();
-        },300);   
+        }, 300);
     });
 
 });
@@ -181,7 +111,7 @@ $(window).load(function() {
 Any JS inside $(window).resize(function() runs when the window is resized
 ====================================================*/
 
-$(window).resize(function() {
+$(window).resize(function () {
     "use strict";
     // Call the matchCarouselheight() function when the window is resized
     matchCarouselHeight();
@@ -191,7 +121,7 @@ $(window).resize(function() {
 Any JS inside $(window).scroll(function() runs when the window is scrolled
 ====================================================*/
 
-$(window).scroll(function() {
+$(window).scroll(function () {
     "use strict";
     if ($(this).scrollTop() > 100) {
         $('.scroll-up').fadeIn();
@@ -203,7 +133,7 @@ $(window).scroll(function() {
 /*==================================================
 Any JS inside $(function() runs when jQuery is ready
 ====================================================*/
-$(function() {
+$(function () {
     "use strict";
     // We use strict mode to encounter errors when using JSHint/JSLint
 
@@ -217,15 +147,15 @@ $(function() {
     });
 
     // Smooth scrolling links - requires jQuery Easing plugin
-    $('a.page-scroll').bind('click', function(event) {
+    $('a.page-scroll').bind('click', function (event) {
         var $anchor = $(this);
 
-        if ( $anchor.hasClass('header-scroll') ) {
+        if ($anchor.hasClass('header-scroll')) {
             $('html, body').stop().animate({
                 scrollTop: $($anchor.attr('href')).offset().top
             }, 1500, 'easeInOutExpo');
         }
-        else{
+        else {
             $('html, body').stop().animate({
                 scrollTop: $($anchor.attr('href')).offset().top - 75
             }, 1500, 'easeInOutExpo');
@@ -241,3 +171,73 @@ $(function() {
     // Initialise WOW.js for section animation triggered when page scrolling
     new WOW().init();
 });
+
+/*============================================
+Contact Map
+==============================================*/
+function loadGoogleMap() {
+    "use strict";
+
+    // Set mapPoint, latitude and longitude, zoom, and other info needed for Google Map
+    var mapPoint = {
+        'lat': 39.1054515,
+        'lng': -94.5813767,
+        'zoom': 16,
+        'infoText': '<p>The Homesteader Cafe\
+                         <br/>100 E 7th St\
+                         <br/>Kansas City, MO\
+                         <br/>64106</p>',
+        'linkText': 'View on Google Maps',
+        'mapAddress': '100 E 7th St, Kansas City, MO 64106',
+        'icon': '/content/foodster/images/map_pin.png'
+    };
+
+    if ($('#homepage_map').length) {
+
+        var map;
+        var mapstyles = [{ "stylers": [{ "saturation": -100 }] }];
+
+        var infoWindow = new google.maps.InfoWindow();
+        var pointLatLng = new google.maps.LatLng(mapPoint.lat, mapPoint.lng);
+
+        // Define options for the Google Map
+        var mapOptions = {
+            zoom: mapPoint.zoom,
+            center: pointLatLng,
+            zoomControl: true,
+            panControl: false,
+            streetViewControl: false,
+            mapTypeControl: false,
+            overviewMapControl: false,
+            scrollwheel: false,
+            styles: mapstyles
+        };
+
+        // Create new Google Map object for full width map section on homepage
+        map = new google.maps.Map(document.getElementById("homepage_map"), mapOptions);
+
+        var marker = new google.maps.Marker({
+            position: pointLatLng,
+            map: map,
+            title: mapPoint.linkText,
+            icon: mapPoint.icon
+        });
+
+        var mapLink = 'https://www.google.com/maps/preview?ll=' + mapPoint.lat + ',' + mapPoint.lng + '&z=14&q=' + mapPoint.mapAddress;
+
+        // Set the info window content
+        var html = '<div class="infowin">' + mapPoint.infoText + '<a href="' + mapLink + '" target="_blank">' + mapPoint.linkText + '</a>' + '</div>';
+
+        // Add map marker
+        google.maps.event.addListener(marker, 'mouseover', function () {
+            infoWindow.setContent(html);
+            infoWindow.open(map, marker);
+        });
+
+        // Function for when the map marker is clicked 
+        google.maps.event.addListener(marker, 'click', function () {
+            window.open(mapLink, '_blank');
+        });
+
+    }
+}
